@@ -22,6 +22,7 @@ describe('a DetailThread entities', () => {
       body: 'body thread',
       date: '2021-08-08',
       username: 'dicoding',
+      comments: [],
     };
 
     // Action and Assert
@@ -36,6 +37,7 @@ describe('a DetailThread entities', () => {
       body: 'body thread',
       date: '2021-08-08T07:19:09.775Z',
       username: 'dicoding',
+      comments: [],
     };
 
     // Action
@@ -47,5 +49,6 @@ describe('a DetailThread entities', () => {
     expect(detailThread.body).toEqual(payload.body);
     expect(detailThread.date).toEqual(payload.date);
     expect(detailThread.username).toEqual(payload.username);
+    expect(detailThread.comments).toEqual(payload.comments);
   });
 });

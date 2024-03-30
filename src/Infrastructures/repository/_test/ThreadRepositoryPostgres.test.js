@@ -1,5 +1,7 @@
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
+const CeommetsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
@@ -12,6 +14,8 @@ describe('ThreadRepositoryPostgres', () => {
   });
   afterEach(async () => {
     await ThreadsTableTestHelper.cleanTable();
+    await CeommetsTableTestHelper.cleanTable();
+    await RepliesTableTestHelper.cleanTable();
   });
   afterAll(async () => {
     await UsersTableTestHelper.cleanTable();
@@ -105,6 +109,38 @@ describe('ThreadRepositoryPostgres', () => {
         .resolves
         .not
         .toThrowError(NotFoundError);
+    });
+  });
+
+  describe('getRepliesByThreadId function', () => {
+    it('should return empty array when no replies found', async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await CeommetsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123' });
+
+      // Action
+      const replies = await threadRepositoryPostgres.getRepliesByThreadId('thread-123');
+
+      // Assert
+      expect(replies).toHaveLength(0);
+    });
+
+    it('should return replies correctly', async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
+      await CeommetsTableTestHelper.addComment({ id: 'comment-123', threadId: 'thread-123' });
+      await RepliesTableTestHelper.addReply({ id: 'reply-123', commentId: 'comment-123' });
+
+      // Action
+      const replies = await threadRepositoryPostgres.getRepliesByThreadId('thread-123');
+
+      // Assert
+      expect(replies).toHaveLength(1);
+      expect(replies[0].id).toEqual('reply-123');
     });
   });
 });

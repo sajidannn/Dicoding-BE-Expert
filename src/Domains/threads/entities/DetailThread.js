@@ -1,9 +1,9 @@
-class RegisteredUser {
+class DetailThread {
   constructor(payload) {
     this._verifyPayload(payload);
 
     const {
-      id, title, body, date, username,
+      id, title, body, date, username, comments,
     } = payload;
 
     this.id = id;
@@ -11,14 +11,15 @@ class RegisteredUser {
     this.body = body;
     this.date = date;
     this.username = username;
+    this.comments = comments;
   }
 
   _verifyPayload(payload) {
     const {
-      id, title, body, date, username,
+      id, title, body, date, username, comments,
     } = payload;
 
-    if (!id || !title || !body || !date || !username) {
+    if (!id || !title || !body || !date || !username || !comments) {
       throw new Error('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -28,10 +29,11 @@ class RegisteredUser {
       || typeof body !== 'string'
       || typeof date !== 'string'
       || typeof username !== 'string'
+      || !Array.isArray(comments)
     ) {
       throw new Error('DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
 
-module.exports = RegisteredUser;
+module.exports = DetailThread;

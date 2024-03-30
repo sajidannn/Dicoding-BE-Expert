@@ -119,6 +119,23 @@ describe('/threads endpoint', () => {
   });
 
   describe('when GET /threads/{threadId}', () => {
+    it('should throw NotFoundError when thread not found', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/notFoundThread',
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Thread tidak ditemukan');
+    });
+
     it('should response 200 and array of thread', async () => {
       // Arrange
       const threadId = 'thread-123';
@@ -137,23 +154,6 @@ describe('/threads endpoint', () => {
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.thread).toBeDefined();
-    });
-
-    it('should throw NotFoundError when thread not found', async () => {
-      // Arrange
-      const server = await createServer(container);
-
-      // Action
-      const response = await server.inject({
-        method: 'GET',
-        url: '/threads/notFoundThread',
-      });
-
-      // Assert
-      const responseJson = JSON.parse(response.payload);
-      expect(response.statusCode).toEqual(404);
-      expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Thread tidak ditemukan');
     });
   });
 });
