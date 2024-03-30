@@ -101,6 +101,35 @@ describe('end point add comment', () => {
       expect(responseJson.message).toEqual('tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada');
     });
 
+    it('should response 400 when request payload not meet data type specification', async () => {
+      // arrange
+      const requestPayload = {
+        content: 123,
+      };
+      const server = await createServer(container);
+
+      /* login to add thread and get accessToken and threadId */
+      const { accessToken, userId } = await ServerTestHelper.getAccessTokenAndUserId({ server });
+      const threadId = 'thread-123';
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
+
+      // action
+      const response = await server.inject({
+        method: 'POST',
+        url: `/threads/${threadId}/comments`,
+        payload: requestPayload,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(400);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('tidak dapat membuat comment baru karena tipe data tidak sesuai');
+    });
+
     it('should response 201 and persisted comment', async () => {
       // arrange
       const requestPayload = {
