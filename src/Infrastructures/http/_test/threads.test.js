@@ -1,14 +1,14 @@
 const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
-const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 
 describe('/threads endpoint', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
-    await ThreadTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
   });
   afterAll(async () => {
     await pool.end();
@@ -123,7 +123,7 @@ describe('/threads endpoint', () => {
       // Arrange
       const threadId = 'thread-123';
       await UsersTableTestHelper.addUser({ id: 'user-123' });
-      await ThreadTableTestHelper.addThread({ id: threadId });
+      await ThreadsTableTestHelper.addThread({ id: threadId });
       const server = await createServer(container);
 
       // Action

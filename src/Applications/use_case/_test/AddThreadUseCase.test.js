@@ -20,6 +20,14 @@ describe('AddThreadUseCase', () => {
       owner: useCasePayload.owner,
     });
 
+    const expectedAddedThread = new AddedThread({
+      id: 'thread-123',
+      title: useCasePayload.title,
+      body: useCasePayload.body,
+      date: '2024-08-08T07:22:33.555Z',
+      owner: useCasePayload.owner,
+    });
+
     // creating usecase dependency
     const mockThreadRepository = new ThreadRepository();
 
@@ -35,13 +43,7 @@ describe('AddThreadUseCase', () => {
     const addedThread = await addThreadUseCase.execute(useCasePayload);
 
     // Assert
-    expect(addedThread).toStrictEqual(new AddedThread({
-      id: 'thread-123',
-      title: useCasePayload.title,
-      body: useCasePayload.body,
-      date: '2024-08-08T07:22:33.555Z',
-      owner: useCasePayload.owner,
-    }));
+    expect(addedThread).toStrictEqual(expectedAddedThread);
     expect(mockThreadRepository.addThread).toBeCalledWith(
       new NewThread({
         title: useCasePayload.title,

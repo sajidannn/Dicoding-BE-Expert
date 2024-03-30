@@ -1,4 +1,4 @@
-const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
@@ -11,7 +11,7 @@ describe('ThreadRepositoryPostgres', () => {
     await UsersTableTestHelper.addUser({ id: 'user-123' });
   });
   afterEach(async () => {
-    await ThreadTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
   });
   afterAll(async () => {
     await UsersTableTestHelper.cleanTable();
@@ -34,7 +34,7 @@ describe('ThreadRepositoryPostgres', () => {
       await threadRepositoryPostgres.addThread(newThread);
 
       // Assert
-      const addedThread = await ThreadTableTestHelper.findThreadsById('thread-456');
+      const addedThread = await ThreadsTableTestHelper.findThreadsById('thread-456');
       expect(addedThread).toHaveLength(1);
     });
 
@@ -74,7 +74,7 @@ describe('ThreadRepositoryPostgres', () => {
     it('should return thread correctly', async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
-      await ThreadTableTestHelper.addThread({ id: 'thread-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
 
       // Action
       const thread = await threadRepositoryPostgres.getThreadById('thread-123');
@@ -98,7 +98,7 @@ describe('ThreadRepositoryPostgres', () => {
     it('should not throw NotFoundError when thread found', async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
-      await ThreadTableTestHelper.addThread({ id: 'thread-123' });
+      await ThreadsTableTestHelper.addThread({ id: 'thread-123' });
 
       // Action & Assert
       await expect(threadRepositoryPostgres.verifyAvailableThread('thread-123'))

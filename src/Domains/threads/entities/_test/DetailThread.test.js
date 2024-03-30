@@ -4,8 +4,8 @@ describe('a DetailThread entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = {
-      title: 'sebuah thread',
-      body: 'sebuah body thread',
+      title: 'title thread',
+      body: 'body thread',
       date: '2021-08-08',
       username: 'dicoding',
     };
@@ -19,7 +19,7 @@ describe('a DetailThread entities', () => {
     const payload = {
       id: 123,
       title: true,
-      body: 'sebuah body thread',
+      body: 'body thread',
       date: '2021-08-08',
       username: 'dicoding',
     };
@@ -32,8 +32,8 @@ describe('a DetailThread entities', () => {
     // Arrange
     const payload = {
       id: 'thread-h_123',
-      title: 'sebuah thread',
-      body: 'sebuah body thread',
+      title: 'title thread',
+      body: 'body thread',
       date: '2021-08-08T07:19:09.775Z',
       username: 'dicoding',
     };

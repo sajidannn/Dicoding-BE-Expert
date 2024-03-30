@@ -4,7 +4,7 @@ describe('a NewComment entities', () => {
   it('should throw error when payload not contain needed property', () => {
     // Arrange
     const payload = {
-      content: 'content',
+      content: 'comment content',
     };
 
     // Action & Assert
@@ -14,7 +14,7 @@ describe('a NewComment entities', () => {
   it('should throw error when payload not meet data type specification', () => {
     // Arrange
     const payload = {
-      content: 'content',
+      content: 'comment content',
       owner: 123,
       threadId: 123,
     };
@@ -26,7 +26,7 @@ describe('a NewComment entities', () => {
   it('should create NewComment entities correctly', () => {
     // Arrange
     const payload = {
-      content: 'content',
+      content: 'comment content',
       owner: 'user-123',
       threadId: 'thread-123',
     };

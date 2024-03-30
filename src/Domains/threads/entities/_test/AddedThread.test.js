@@ -5,7 +5,7 @@ describe('a AddedThread entities', () => {
     // Arrange
     const payload = {
       id: 'thread-123',
-      title: 'title',
+      title: 'title thread',
     };
 
     // Action & Assert
@@ -16,7 +16,7 @@ describe('a AddedThread entities', () => {
     // Arrange
     const payload = {
       id: 'thread-123',
-      title: 'title',
+      title: 'title thread',
       owner: 1234,
     };
 
@@ -28,7 +28,7 @@ describe('a AddedThread entities', () => {
     // Arrange
     const payload = {
       id: 'thread-123',
-      title: 'title',
+      title: 'title thread',
       owner: 'user-123',
     };
 

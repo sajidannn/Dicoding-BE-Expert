@@ -4,7 +4,7 @@ describe('a NewThread entities', () => {
   it('should throw error when payload not contain needed property', () => {
     // Arrange
     const payload = {
-      title: 'title',
+      title: 'title thread',
     };
 
     // Action & Assert
@@ -14,7 +14,7 @@ describe('a NewThread entities', () => {
   it('should throw error when payload not meet data type specification', () => {
     // Arrange
     const payload = {
-      title: 'title',
+      title: 'title thread',
       body: 1234,
       owner: 'user-123',
     };
@@ -26,8 +26,8 @@ describe('a NewThread entities', () => {
   it('should create NewThread entities correctly', () => {
     // Arrange
     const payload = {
-      title: 'title',
-      body: 'body',
+      title: 'title thread',
+      body: 'body thread',
       owner: 'user-123',
     };
 

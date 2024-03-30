@@ -3,13 +3,13 @@ const container = require('../../container');
 const createServer = require('../createServer');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const ThreadTableTestHelper = require('../../../../tests/ThreadTableTestHelper');
-const CommentsTableTestHelper = require('../../../../tests/CommentTableTestHelper');
+const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 
 describe('end point add comment', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
-    await ThreadTableTestHelper.cleanTable();
+    await ThreadsTableTestHelper.cleanTable();
     await CommentsTableTestHelper.cleanTable();
   });
 
@@ -18,22 +18,23 @@ describe('end point add comment', () => {
   });
 
   describe('when POST /threads/{threadId}/comments', () => {
-    it('should response 401 when request not contain access token', async () => {
+    it('should response 401 when request is not authenticated', async () => {
       // arrange
+      const requestPayload = {
+        content: 'content of comment',
+      };
       const server = await createServer(container);
 
       /* add user and thread */
       const userId = await UsersTableTestHelper.addUser({ id: 'user-123' });
       const threadId = 'thread-123';
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
 
       // action
       const response = await server.inject({
         method: 'POST',
         url: `/threads/${threadId}/comments`,
-        payload: {
-          content: 'content',
-        },
+        payload: requestPayload,
       });
 
       // assert
@@ -45,19 +46,20 @@ describe('end point add comment', () => {
 
     it('should response 404 when thread not found', async () => {
       // arrange
+      const requestPayload = {
+        content: 'content of comment',
+      };
       const server = await createServer(container);
 
       /* login and get acces token */
       const { userId, accessToken } = await ServerTestHelper.getAccessTokenAndUserId({ server });
-      await ThreadTableTestHelper.addThread({ owner: userId });
+      await ThreadsTableTestHelper.addThread({ owner: userId });
 
       // action
       const response = await server.inject({
         method: 'POST',
         url: '/threads/notFoundThread/comments',
-        payload: {
-          content: 'content',
-        },
+        payload: requestPayload,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -72,20 +74,21 @@ describe('end point add comment', () => {
 
     it('should response 400 when request payload not contain needed property', async () => {
       // arrange
+      const requestPayload = {
+        content: '',
+      };
       const server = await createServer(container);
 
       /* login to add thread and get accessToken and threadId */
       const { accessToken, userId } = await ServerTestHelper.getAccessTokenAndUserId({ server });
       const threadId = 'thread-123';
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
 
       // action
       const response = await server.inject({
         method: 'POST',
         url: `/threads/${threadId}/comments`,
-        payload: {
-          content: '',
-        },
+        payload: requestPayload,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -95,23 +98,20 @@ describe('end point add comment', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada',
-      );
+      expect(responseJson.message).toEqual('tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada');
     });
 
-    it('should response 201 and persisted thread', async () => {
+    it('should response 201 and persisted comment', async () => {
       // arrange
+      const requestPayload = {
+        content: 'content of comment',
+      };
       const server = await createServer(container);
 
       /* login to add thread and get accessToken and threadId */
       const { accessToken, userId } = await ServerTestHelper.getAccessTokenAndUserId({ server });
       const threadId = 'thread-123';
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
-
-      const requestPayload = {
-        content: 'content',
-      };
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
 
       // action
       const response = await server.inject({
@@ -145,7 +145,7 @@ describe('end point add comment', () => {
       const threadId = 'thread-123';
       const commentId = 'comment-123';
 
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
       await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       // action
@@ -170,7 +170,7 @@ describe('end point add comment', () => {
       const threadId = 'thread-123';
       const commentId = 'comment-123';
 
-      await ThreadTableTestHelper.addThread({ owner: userId });
+      await ThreadsTableTestHelper.addThread({ owner: userId });
       await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       // action
@@ -200,7 +200,7 @@ describe('end point add comment', () => {
       /* added comment user */
       const userId2 = 'user-123';
 
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
       await UsersTableTestHelper.addUser({ id: userId2 });
       await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId2 });
 
@@ -230,7 +230,7 @@ describe('end point add comment', () => {
       const threadId = 'thread-123';
       const commentId = 'comment-123';
 
-      await ThreadTableTestHelper.addThread({ id: threadId, owner: userId });
+      await ThreadsTableTestHelper.addThread({ id: threadId, owner: userId });
       await CommentsTableTestHelper.addComment({ id: commentId, threadId, owner: userId });
 
       // action

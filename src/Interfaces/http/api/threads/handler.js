@@ -21,7 +21,6 @@ class ThreadsHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'Thread berhasil ditambahkan',
       data: {
         addedThread,
       },
