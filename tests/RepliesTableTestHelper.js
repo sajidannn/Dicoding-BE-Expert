@@ -7,7 +7,7 @@ const RepliesTableTestHelper = {
     content = 'content',
     owner = 'user-123',
     commentId = 'comment-123',
-    date = '2021-08-08',
+    date = new Date('2024-05-08T00:00:00.000Z'),
   }) {
     const query = {
       text: 'INSERT INTO replies VALUES($1, $2, $3, $4, $5)',

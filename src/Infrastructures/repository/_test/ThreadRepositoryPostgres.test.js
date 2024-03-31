@@ -84,7 +84,13 @@ describe('ThreadRepositoryPostgres', () => {
       const thread = await threadRepositoryPostgres.getThreadById('thread-123');
 
       // Assert
-      expect(thread.id).toEqual('thread-123');
+      expect(thread).toStrictEqual({
+        id: 'thread-123',
+        title: 'title thread',
+        body: 'body thread',
+        date: new Date('2024-05-08T00:00:00.000Z'),
+        username: 'dicoding',
+      });
     });
   });
 
@@ -140,7 +146,15 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Assert
       expect(replies).toHaveLength(1);
-      expect(replies[0].id).toEqual('reply-123');
+      expect(replies[0]).toStrictEqual({
+        id: 'reply-123',
+        comment_id: 'comment-123',
+        username: 'dicoding',
+        date: new Date('2024-05-08T00:00:00.000Z'),
+        content: 'content',
+        owner: 'user-123',
+        is_deleted: false,
+      });
     });
   });
 });

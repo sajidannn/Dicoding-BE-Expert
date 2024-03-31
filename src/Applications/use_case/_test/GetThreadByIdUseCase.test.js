@@ -10,7 +10,7 @@ describe('GetThreadUseCase', () => {
       threadId: 'thread-123',
     };
 
-    const mockedThread = new DetailThread({
+    const mockThread = new DetailThread({
       id: 'thread-123',
       title: 'tread title',
       body: 'thread body',
@@ -27,7 +27,7 @@ describe('GetThreadUseCase', () => {
       comments: [],
     });
 
-    const mockedComments = [
+    const mockComments = [
       {
         id: 'comment-123',
         username: 'dicoding',
@@ -46,7 +46,7 @@ describe('GetThreadUseCase', () => {
       },
     ];
 
-    const mockedReplies = [
+    const mockReplies = [
       {
         id: 'reply-123',
         content: 'reply content',
@@ -83,11 +83,11 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedThread));
+      .mockImplementation(() => Promise.resolve(mockThread));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedComments));
+      .mockImplementation(() => Promise.resolve(mockComments));
     mockThreadRepository.getRepliesByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedReplies));
+      .mockImplementation(() => Promise.resolve(mockReplies));
 
     const mockGetThreadUseCase = new GetThreadUseCase({
       commentRepository: mockCommentRepository,
@@ -114,7 +114,7 @@ describe('GetThreadUseCase', () => {
       threadId: 'thread-123',
     };
 
-    const mockedThread = new DetailThread({
+    const mockThread = new DetailThread({
       id: 'thread-123',
       title: 'tread title',
       body: 'thread body',
@@ -131,7 +131,7 @@ describe('GetThreadUseCase', () => {
       comments: [],
     });
 
-    const mockedComments = [
+    const mockComments = [
       {
         id: 'comment-123',
         username: 'dicoding',
@@ -150,7 +150,7 @@ describe('GetThreadUseCase', () => {
       },
     ];
 
-    const mockedReplies = [
+    const mockReplies = [
       {
         id: 'reply-123',
         content: 'reply content',
@@ -187,11 +187,11 @@ describe('GetThreadUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedThread));
+      .mockImplementation(() => Promise.resolve(mockThread));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedComments));
+      .mockImplementation(() => Promise.resolve(mockComments));
     mockThreadRepository.getRepliesByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedReplies));
+      .mockImplementation(() => Promise.resolve(mockReplies));
 
     const mockGetThreadUseCase = new GetThreadUseCase({
       commentRepository: mockCommentRepository,

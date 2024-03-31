@@ -41,5 +41,6 @@ describe('a NewReply entities', () => {
     expect(newReply.content).toEqual(payload.content);
     expect(newReply.owner).toEqual(payload.owner);
     expect(newReply.commentId).toEqual(payload.commentId);
+    expect(newReply.threadId).toEqual(payload.threadId);
   });
 });

@@ -106,27 +106,26 @@ describe('CommentRepositoryPostgres', () => {
         id: 'comment-123',
         content: 'first comment',
         date: new Date('2024-05-08T00:00:00.000Z'),
+        is_deleted: false,
+        owner: 'user-123',
+        thread_id: 'thread-123',
       };
       const secondComment = {
         id: 'comment-345',
         content: 'second comment',
         date: new Date('2024-05-08T01:00:00.000Z'),
+        is_deleted: false,
+        owner: 'user-123',
+        thread_id: 'thread-123',
       };
 
       await CommentsTableTestHelper.addComment(firstComment);
       await CommentsTableTestHelper.addComment(secondComment);
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
-      let commentDetails = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
+      const commentDetails = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
 
-      commentDetails = commentDetails.map((comment) => ({
-        id: comment.id,
-        username: comment.username,
-        date: comment.date,
-        content: comment.content,
-      }));
-
-      expect(commentDetails).toEqual([
+      expect(commentDetails).toStrictEqual([
         { ...firstComment, username: 'dicoding' },
         { ...secondComment, username: 'dicoding' },
       ]);

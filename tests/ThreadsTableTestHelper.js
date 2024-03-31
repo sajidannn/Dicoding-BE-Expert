@@ -6,7 +6,7 @@ const ThreadsTableTestHelper = {
     id = 'thread-123',
     title = 'title thread',
     body = 'body thread',
-    date = '2021-08-08',
+    date = new Date('2024-05-08T00:00:00.000Z'),
     owner = 'user-123',
   }) {
     const query = {
