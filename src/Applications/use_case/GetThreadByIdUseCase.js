@@ -1,13 +1,14 @@
 class getThreadByIdUseCase {
-  constructor({ commentRepository, threadRepository }) {
+  constructor({ commentRepository, threadRepository, replyRepository }) {
     this._commentRepository = commentRepository;
     this._threadRepository = threadRepository;
+    this._replyRepository = replyRepository;
   }
 
   async execute(threadId) {
     const thread = await this._threadRepository.getThreadById(threadId);
     let comments = await this._commentRepository.getCommentsByThreadId(threadId);
-    const replies = await this._threadRepository.getRepliesByThreadId(threadId);
+    const replies = await this._replyRepository.getRepliesByThreadId(threadId);
 
     comments = comments.map((comment) => ({
       id: comment.id,

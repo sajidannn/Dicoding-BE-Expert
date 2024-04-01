@@ -95,6 +95,41 @@ describe('ReplyRepositoryPostgres', () => {
     });
   });
 
+  describe('getRepliesByThreadId function', () => {
+    it('should return empty array when no replies found', async () => {
+      // Arrange
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
+
+      // Assert
+      expect(replies).toHaveLength(0);
+    });
+
+    it('should return replies correctly', async () => {
+      // Arrange
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      await RepliesTableTestHelper.addReply({ id: 'reply-123', commentId: 'comment-123' });
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
+
+      // Assert
+      expect(replies).toHaveLength(1);
+      expect(replies[0]).toStrictEqual({
+        id: 'reply-123',
+        comment_id: 'comment-123',
+        username: 'dicoding',
+        date: new Date('2024-05-08T00:00:00.000Z'),
+        content: 'content',
+        owner: 'user-123',
+        is_deleted: false,
+      });
+    });
+  });
+
   describe('deleteReplyById function', () => {
     it('should throw NotFoundError when reply not found', async () => {
       // Arrange

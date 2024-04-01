@@ -43,6 +43,22 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       });
   }
 
+  async getRepliesByThreadId(threadId) {
+    const query = {
+      text: `SELECT replies.*, users.username
+            FROM replies
+            LEFT JOIN comments ON replies.comment_id = comments.id
+            LEFT JOIN users ON replies.owner = users.id
+            WHERE comments.thread_id = $1
+            ORDER BY replies.date ASC`,
+      values: [threadId],
+    };
+
+    const { rows } = await this._pool.query(query);
+
+    return rows;
+  }
+
   async deleteReplyById(replyId) {
     const query = {
       text: 'UPDATE replies SET is_deleted = TRUE WHERE id = $1',
