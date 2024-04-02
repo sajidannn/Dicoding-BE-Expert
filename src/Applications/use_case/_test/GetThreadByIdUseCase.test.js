@@ -16,7 +16,6 @@ describe('GetThreadUseCase', () => {
       body: 'thread body',
       date: '2024-08-04T07:58:35.000Z',
       username: 'dicoding',
-      comments: [],
     };
     const expectedThread = {
       id: 'thread-123',
@@ -24,24 +23,23 @@ describe('GetThreadUseCase', () => {
       body: 'thread body',
       date: '2024-08-04T07:58:35.000Z',
       username: 'dicoding',
-      comments: [],
     };
 
     const mockComments = [
       {
         id: 'comment-123',
+        content: 'comment content',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        content: 'comment content',
         is_deleted: false,
       },
     ];
     const expectedComments = [
       {
         id: 'comment-123',
+        content: 'comment content',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        content: 'comment content',
         is_deleted: false,
       },
     ];
@@ -122,7 +120,6 @@ describe('GetThreadUseCase', () => {
       body: 'thread body',
       date: '2024-08-04T07:58:35.000Z',
       username: 'dicoding',
-      comments: [],
     };
     const expectedThread = {
       id: 'thread-123',
@@ -130,25 +127,24 @@ describe('GetThreadUseCase', () => {
       body: 'thread body',
       date: '2024-08-04T07:58:35.000Z',
       username: 'dicoding',
-      comments: [],
     };
 
     const mockComments = [
       {
         id: 'comment-123',
+        content: 'comment content',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        content: 'comment content',
-        is_deleted: true,
+        is_deleted: false,
       },
     ];
     const expectedComments = [
       {
         id: 'comment-123',
+        content: 'comment content',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        content: '**komentar telah dihapus**',
-        is_deleted: true,
+        is_deleted: false,
       },
     ];
 

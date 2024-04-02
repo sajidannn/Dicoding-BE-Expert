@@ -37,8 +37,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!rowCount) {
       throw new NotFoundError('Komentar tidak ditemukan pada thread ini');
     }
-
-    return rowCount;
   }
 
   async getCommentsByThreadId(threadId) {
@@ -66,8 +64,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!rowCount) {
       throw new NotFoundError('Gagal menghapus, komentar tidak ditemukan');
     }
-
-    return rowCount;
   }
 
   async verifyCommentOwner(commentId, ownerId) {
@@ -79,12 +75,8 @@ class CommentRepositoryPostgres extends CommentRepository {
     const { rowCount } = await this._pool.query(query);
 
     if (!rowCount) {
-      throw new AuthorizationError(
-        'Anda bukan pemilik komentar ini',
-      );
+      throw new AuthorizationError('Anda bukan pemilik komentar ini');
     }
-
-    return rowCount;
   }
 }
 

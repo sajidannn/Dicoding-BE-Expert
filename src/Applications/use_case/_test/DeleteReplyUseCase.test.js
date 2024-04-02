@@ -15,11 +15,11 @@ describe('DeleteReplyUseCase', () => {
 
     // mocking needed function
     mockReplyRepository.verifyAvailableReply = jest.fn()
-      .mockImplementation(() => Promise.resolve(1));
+      .mockImplementation(() => Promise.resolve());
     mockReplyRepository.verifyReplyOwner = jest.fn()
-      .mockImplementation(() => Promise.resolve(1));
+      .mockImplementation(() => Promise.resolve());
     mockReplyRepository.deleteReplyById = jest.fn()
-      .mockImplementation(() => Promise.resolve(1));
+      .mockImplementation(() => Promise.resolve());
 
     const deleteReplyUseCase = new DeleteReplyUseCase({
       replyRepository: mockReplyRepository,

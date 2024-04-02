@@ -26,7 +26,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     return new AddedReply({ ...rows[0] });
   }
 
-  verifyAvailableReply(replyId, commentId, threadId) {
+  async verifyAvailableReply(replyId, commentId, threadId) {
     const query = {
       text: `SELECT 1 FROM replies 
             INNER JOIN comments ON replies.comment_id = comments.id
@@ -35,12 +35,11 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       values: [replyId, commentId, threadId],
     };
 
-    return this._pool.query(query)
-      .then(({ rowCount }) => {
-        if (!rowCount) {
-          throw new NotFoundError('Balasan tidak ditemukan');
-        }
-      });
+    const { rowCount } = await this._pool.query(query);
+
+    if (!rowCount) {
+      throw new NotFoundError('Balasan tidak ditemukan');
+    }
   }
 
   async getRepliesByThreadId(threadId) {
@@ -70,8 +69,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!rowCount) {
       throw new NotFoundError('Gagal menghapus, balasan tidak ditemukan');
     }
-
-    return rowCount;
   }
 
   async verifyReplyOwner(replyId, ownerId) {
@@ -83,12 +80,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const { rowCount } = await this._pool.query(query);
 
     if (!rowCount) {
-      throw new AuthorizationError(
-        'Anda bukan pemilik balasan ini',
-      );
+      throw new AuthorizationError('Anda bukan pemilik balasan ini');
     }
-
-    return rowCount;
   }
 }
 
