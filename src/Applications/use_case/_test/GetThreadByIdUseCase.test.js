@@ -135,16 +135,16 @@ describe('GetThreadUseCase', () => {
         content: 'comment content',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        is_deleted: false,
+        is_deleted: true,
       },
     ];
     const expectedComments = [
       {
         id: 'comment-123',
-        content: 'comment content',
+        content: '**komentar telah dihapus**',
         username: 'dicoding',
         date: '2024-08-04T08:58:35.000Z',
-        is_deleted: false,
+        is_deleted: true,
       },
     ];
 
