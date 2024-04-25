@@ -1,5 +1,6 @@
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
+const LikeRepository = require('../../../Domains/likes/LikeRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
 const GetThreadUseCase = require('../GetThreadByIdUseCase');
 
@@ -44,6 +45,33 @@ describe('GetThreadUseCase', () => {
       },
     ];
 
+    const mockLikesCount = [
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-124',
+      },
+    ];
+
+    const expectedLikesCount = [
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+    ];
+
     const mockReplies = [
       {
         id: 'reply-123',
@@ -67,10 +95,12 @@ describe('GetThreadUseCase', () => {
 
     const mappedComments = expectedComments.map(({ is_deleted: deletedComment, ...otherProperties }) => otherProperties);
     const mappedReplies = expectedReplies.map(({ comment_id, is_deleted, ...otherProperties }) => otherProperties);
+    const mappedLikesCount = expectedLikesCount.map(({ comment_id }) => ({ comment_id }));
 
     const expectedCommentsAndReplies = [
       {
         ...mappedComments[0],
+        likeCount: mappedLikesCount.length,
         replies: mappedReplies,
       },
     ];
@@ -79,18 +109,22 @@ describe('GetThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockThread));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockComments));
+    mockLikeRepository.getCommentsLikesCount = jest.fn()
+      .mockImplementation(() => Promise.resolve(mockLikesCount));
     mockReplyRepository.getRepliesByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockReplies));
 
     const mockGetThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
+      likeRepository: mockLikeRepository,
       replyRepository: mockReplyRepository,
     });
 
@@ -105,6 +139,7 @@ describe('GetThreadUseCase', () => {
 
     expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(useCasePayload.threadId);
+    expect(mockLikeRepository.getCommentsLikesCount).toBeCalledWith(useCasePayload.threadId);
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(useCasePayload.threadId);
   });
 
@@ -148,6 +183,33 @@ describe('GetThreadUseCase', () => {
       },
     ];
 
+    const mockLikesCount = [
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-124',
+      },
+    ];
+
+    const expectedLikesCount = [
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+      {
+        comment_id: 'comment-123',
+      },
+    ];
+
     const mockReplies = [
       {
         id: 'reply-123',
@@ -171,10 +233,12 @@ describe('GetThreadUseCase', () => {
 
     const mappedComments = expectedComments.map(({ is_deleted: deletedComment, ...otherProperties }) => otherProperties);
     const mappedReplies = expectedReplies.map(({ comment_id, is_deleted, ...otherProperties }) => otherProperties);
+    const mappedLikesCount = expectedLikesCount.map(({ comment_id }) => ({ comment_id }));
 
     const expectedCommentsAndReplies = [
       {
         ...mappedComments[0],
+        likeCount: mappedLikesCount.length,
         replies: mappedReplies,
       },
     ];
@@ -183,18 +247,22 @@ describe('GetThreadUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     /** mocking needed function */
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockThread));
     mockCommentRepository.getCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockComments));
+    mockLikeRepository.getCommentsLikesCount = jest.fn()
+      .mockImplementation(() => Promise.resolve(mockLikesCount));
     mockReplyRepository.getRepliesByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockReplies));
 
     const mockGetThreadUseCase = new GetThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
+      likeRepository: mockLikeRepository,
       replyRepository: mockReplyRepository,
     });
 
@@ -208,6 +276,7 @@ describe('GetThreadUseCase', () => {
     });
     expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(useCasePayload.threadId);
+    expect(mockLikeRepository.getCommentsLikesCount).toBeCalledWith(useCasePayload.threadId);
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(useCasePayload.threadId);
   });
 });
