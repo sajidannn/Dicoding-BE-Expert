@@ -8,10 +8,10 @@ class LikeRepository {
   }
 
   async unlikeComment(userId, commentId) {
-    throw new Error('LIKE_REPOSITORY.METHOD_IMPLEMENTED');
+    throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async getLikeCountByCommentId(commentId) {
+  async getCommentsLikesCount(threadId) {
     throw new Error('LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }

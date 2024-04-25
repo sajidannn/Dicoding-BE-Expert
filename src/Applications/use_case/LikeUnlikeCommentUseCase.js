@@ -6,18 +6,16 @@ class LikeUnlikeCommentUseCase {
   }
 
   async execute(useCasePayload) {
-    const { userId, threadId, commentId } = useCasePayload;
+    await this._threadRepository.verifyAvailableThread(useCasePayload.threadId);
+    await this._commentRepository.verifyAvailableCommentInThread(useCasePayload.commentId, useCasePayload.threadId);
 
-    await this._threadRepository.verifyAvailableThread(threadId);
-    await this._commentRepository.verifyAvailableCommentInThread(commentId, threadId);
-
-    const isLikeExist = await this._likeRepository.isLikeExist(userId, commentId);
+    const isLikeExist = await this._likeRepository.isLikeExist(useCasePayload);
 
     if (isLikeExist > 0) {
-      return this._likeRepository.unlikeComment(userId, commentId);
+      return this._likeRepository.unlikeComment(useCasePayload);
     }
 
-    return this._likeRepository.likeComment(userId, commentId);
+    return this._likeRepository.likeComment(useCasePayload);
   }
 }
 

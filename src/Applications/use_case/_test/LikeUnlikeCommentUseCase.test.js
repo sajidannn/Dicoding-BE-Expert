@@ -38,8 +38,8 @@ describe('LikeUnlikeCommentUseCase', () => {
     expect(isLike).toEqual(1);
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.verifyAvailableCommentInThread).toBeCalledWith(useCasePayload.commentId, useCasePayload.threadId);
-    expect(mockLikeRepository.isLikeExist).toBeCalledWith(useCasePayload.userId, useCasePayload.commentId);
-    expect(mockLikeRepository.likeComment).toBeCalledWith(useCasePayload.userId, useCasePayload.commentId);
+    expect(mockLikeRepository.isLikeExist).toBeCalledWith(useCasePayload);
+    expect(mockLikeRepository.likeComment).toBeCalledWith(useCasePayload);
   });
 
   it('should orchestrating the unlike comment use case correctly', async () => {
@@ -76,7 +76,7 @@ describe('LikeUnlikeCommentUseCase', () => {
     expect(isUnlike).toEqual(1);
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(useCasePayload.threadId);
     expect(mockCommentRepository.verifyAvailableCommentInThread).toBeCalledWith(useCasePayload.commentId, useCasePayload.threadId);
-    expect(mockLikeRepository.isLikeExist).toBeCalledWith(useCasePayload.userId, useCasePayload.commentId);
-    expect(mockLikeRepository.unlikeComment).toBeCalledWith(useCasePayload.userId, useCasePayload.commentId);
+    expect(mockLikeRepository.isLikeExist).toBeCalledWith(useCasePayload);
+    expect(mockLikeRepository.unlikeComment).toBeCalledWith(useCasePayload);
   });
 });
